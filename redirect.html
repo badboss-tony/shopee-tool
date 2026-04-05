@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跳轉中...</title>
+</head>
+
+<body style="text-align:center; padding:40px;">
+<h3>🔄 正在跳轉蝦皮...</h3>
+<p>請稍候...</p>
+
+<a id="manual" href="#" style="display:none;">
+👉 點我開啟商品
+</a>
+
+<script>
+const target = new URLSearchParams(window.location.search).get("url");
+
+document.getElementById("manual").href = target;
+
+setTimeout(() => {
+    window.location.replace(target);
+}, 1200);
+
+// fallback（避免失敗）
+setTimeout(() => {
+    document.getElementById("manual").style.display = "block";
+}, 2000);
+</script>
+
+</body>
+</html>
