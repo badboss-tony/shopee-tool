@@ -85,6 +85,7 @@ function generateAffLink(url) {
     const ids = extractIds(url);
     if (!ids) return null;
 
+    // 🔥 永遠輸出 product 格式（關鍵）
     return `https://shopee.tw/product/${ids.shop_id}/${ids.item_id}?${AFF_PARAM}`;
 }
 
