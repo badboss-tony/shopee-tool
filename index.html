@@ -70,30 +70,36 @@ button {
 </div>
 
 <script>
+
+// ✅ 分潤參數（統一管理）
 const AFF_PARAM = "mmp_pid=an_16376520008&utm_source=an_16376520008&utm_medium=affiliates";
 
+// ✅ 抓商品ID
 function extractIds(url) {
     let match1 = url.match(/product\/(\d+)\/(\d+)/);
     let match2 = url.match(/-i\.(\d+)\.(\d+)/);
 
     if (match1) return { shop_id: match1[1], item_id: match1[2] };
     if (match2) return { shop_id: match2[1], item_id: match2[2] };
+
     return null;
 }
 
+// ✅ 生成分潤連結（乾淨URL）
 function generateAffLink(url) {
     const ids = extractIds(url);
     if (!ids) return null;
 
-    // 🔥 永遠輸出 product 格式（關鍵）
     return `https://shopee.tw/product/${ids.shop_id}/${ids.item_id}?${AFF_PARAM}`;
 }
 
+// ✅ 清除
 function clearAll() {
     document.getElementById("inputUrl").value = "";
     document.getElementById("result").innerText = "";
 }
 
+// ✅ 主流程
 function handleLink(openPage) {
     const url = document.getElementById("inputUrl").value.trim();
     const resultDiv = document.getElementById("result");
@@ -103,9 +109,9 @@ function handleLink(openPage) {
         return;
     }
 
+    // ❗短網址提醒
     if (url.includes("shp.ee")) {
-        window.open(url, "_blank");
-        resultDiv.innerHTML = "⚠️ 請複製新網址再貼回";
+        resultDiv.innerHTML = "⚠️ 請先開啟短網址並複製最終商品頁";
         return;
     }
 
@@ -116,17 +122,22 @@ function handleLink(openPage) {
         return;
     }
 
-    navigator.clipboard.writeText(link);
+    // ✅ 複製（含 fallback）
+    navigator.clipboard.writeText(link).catch(() => {
+        alert("請手動複製連結");
+    });
 
     if (!openPage) {
-        resultDiv.innerHTML = "✅ 已複製";
+        resultDiv.innerHTML = "✅ 已複製推廣連結";
         return;
     }
 
+    // ✅ redirect（提高分潤成功率）
     const redirectUrl = `/redirect.html?url=${encodeURIComponent(link)}`;
 
     window.location.href = redirectUrl;
 }
+
 </script>
 
 </body>
